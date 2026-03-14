@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graph — Vikas's Garden</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/garden.css" />
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌿%3C/text%3E%3C/svg%3E" />
+    <style>
+        .graph-container {
+            width: 100%;
+            height: calc(100vh - 140px);
+            position: relative;
+            background: var(--bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .graph-container canvas {
+            cursor: grab;
+        }
+
+        .graph-container canvas:active {
+            cursor: grabbing;
+        }
+
+        .graph-tooltip {
+            position: absolute;
+            padding: 6px 12px;
+            background: var(--text);
+            color: var(--bg);
+            border-radius: 4px;
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            white-space: nowrap;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="index.html" class="site-logo">🌿 Vikas's Garden</a>
+            <ul class="nav-links">
+                <li><a href="index.html">all notes</a></li>
+                <li><a href="graph.html" class="active">graph</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="site-main" style="max-width: 1100px;">
+        <h1 style="font-family: var(--serif); font-size: 1.6rem; margin-bottom: 1rem;">How these ideas connect</h1>
+        <div class="graph-container" id="graph">
+            <div class="graph-tooltip" id="tooltip"></div>
+            <canvas id="canvas"></canvas>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        Vikas Gaur · A digital garden — ideas at various stages of growth.
+    </footer>
+
+    <script>
+        const data = GRAPH_DATA_PLACEHOLDER;
+        (function () {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const container = document.getElementById('graph');
+            const tooltip = document.getElementById('tooltip');
+
+            let width, height;
+            function resize() {
+                width = container.clientWidth;
+                height = container.clientHeight;
+                canvas.width = width * window.devicePixelRatio;
+                canvas.height = height * window.devicePixelRatio;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            // Color by stage
+            const stageColor = {
+                seedling: '#8fbc6b',
+                growing: '#3b9e6b',
+                evergreen: '#2a7a4a'
+            };
+
+            // Position nodes using force simulation
+            const nodes = data.nodes.map((n, i) => ({
+                ...n,
+                x: width / 2 + (Math.random() - 0.5) * 300,
+                y: height / 2 + (Math.random() - 0.5) * 300,
+                vx: 0, vy: 0
+            }));
+
+            const nodeMap = {};
+            nodes.forEach(n => nodeMap[n.id] = n);
+            const edges = data.edges.filter(e => nodeMap[e.source] && nodeMap[e.target]);
+
+            function simulate() {
+                const k = 0.01;    // spring constant
+                const repulsion = 5000;
+                const damping = 0.85;
+                const centerForce = 0.005;
+
+                // Repulsion between all nodes
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const a = nodes[i], b = nodes[j];
+                        let dx = b.x - a.x, dy = b.y - a.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                        let force = repulsion / (dist * dist);
+                        let fx = (dx / dist) * force;
+                        let fy = (dy / dist) * force;
+                        a.vx -= fx; a.vy -= fy;
+                        b.vx += fx; b.vy += fy;
+                    }
+                }
+
+                // Spring force on edges
+                for (const e of edges) {
+                    const a = nodeMap[e.source], b = nodeMap[e.target];
+                    let dx = b.x - a.x, dy = b.y - a.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                    let force = (dist - 120) * k;
+                    let fx = (dx / dist) * force;
+                    let fy = (dy / dist) * force;
+                    a.vx += fx; a.vy += fy;
+                    b.vx -= fx; b.vy -= fy;
+                }
+
+                // Center gravity
+                for (const n of nodes) {
+                    n.vx += (width / 2 - n.x) * centerForce;
+                    n.vy += (height / 2 - n.y) * centerForce;
+                }
+
+                // Apply velocity
+                for (const n of nodes) {
+                    n.vx *= damping;
+                    n.vy *= damping;
+                    n.x += n.vx;
+                    n.y += n.vy;
+                    // Bounds
+                    n.x = Math.max(40, Math.min(width - 40, n.x));
+                    n.y = Math.max(40, Math.min(height - 40, n.y));
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw edges
+                ctx.strokeStyle = 'rgba(59, 59, 158, 0.12)';
+                ctx.lineWidth = 1.5;
+                for (const e of edges) {
+                    const a = nodeMap[e.source], b = nodeMap[e.target];
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+
+                // Draw nodes
+                for (const n of nodes) {
+                    const r = n.size || 8;
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+                    ctx.fillStyle = stageColor[n.stage] || '#3b3b9e';
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Label
+                    ctx.fillStyle = '#2a2a2a';
+                    ctx.font = '500 12px Inter, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(n.label, n.x, n.y + r + 16);
+                }
+            }
+
+            let frame = 0;
+            function loop() {
+                if (frame < 300) simulate();
+                draw();
+                frame++;
+                requestAnimationFrame(loop);
+            }
+            loop();
+
+            // Hover tooltip + click to navigate
+            canvas.addEventListener('mousemove', e => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                let hit = null;
+                for (const n of nodes) {
+                    const dx = mx - n.x, dy = my - n.y;
+                    if (dx * dx + dy * dy < (n.size + 4) * (n.size + 4)) { hit = n; break; }
+                }
+                if (hit) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.left = (mx + 12) + 'px';
+                    tooltip.style.top = (my - 8) + 'px';
+                    tooltip.textContent = hit.label + ' (' + hit.stage + ')';
+                    canvas.style.cursor = 'pointer';
+                } else {
+                    tooltip.style.opacity = '0';
+                    canvas.style.cursor = 'grab';
+                }
+            });
+
+            canvas.addEventListener('click', e => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+                for (const n of nodes) {
+                    const dx = mx - n.x, dy = my - n.y;
+                    if (dx * dx + dy * dy < (n.size + 4) * (n.size + 4)) {
+                        window.location.href = n.id + '.html';
+                        return;
+                    }
+                }
+            });
+
+            // Drag
+            let dragging = null;
+            canvas.addEventListener('mousedown', e => {
+                const rect = canvas.getBoundingClientRect();
+                const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+                for (const n of nodes) {
+                    const dx = mx - n.x, dy = my - n.y;
+                    if (dx * dx + dy * dy < (n.size + 6) * (n.size + 6)) { dragging = n; break; }
+                }
+            });
+            window.addEventListener('mousemove', e => {
+                if (dragging) {
+                    const rect = canvas.getBoundingClientRect();
+                    dragging.x = e.clientX - rect.left;
+                    dragging.y = e.clientY - rect.top;
+                    dragging.vx = 0; dragging.vy = 0;
+                }
+            });
+            window.addEventListener('mouseup', () => { dragging = null; });
+        })();
+    </script>
+
+</body>
+
+</html>

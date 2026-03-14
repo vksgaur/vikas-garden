@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}} — Vikas's Garden</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/garden.css" />
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌿%3C/text%3E%3C/svg%3E" />
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="index.html" class="site-logo">🌿 Vikas's Garden</a>
+            <ul class="nav-links">
+                <li><a href="index.html">all notes</a></li>
+                <li><a href="graph.html">graph</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        <article class="note">
+            <header class="note-header">
+                <div class="note-meta">
+                    <span class="note-stage {{stage}}">{{stageEmoji}} {{stage}}</span>
+                    {{tags}}
+                </div>
+                <h1>{{title}}</h1>
+            </header>
+
+            <div class="note-body">
+                {{body}}
+            </div>
+
+            <aside class="backlinks-section">
+                <h2>🔗 Linked from</h2>
+                <div class="backlinks-list">
+                    {{backlinks}}
+                </div>
+            </aside>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        Vikas Gaur · A digital garden — ideas at various stages of growth.
+    </footer>
+
+</body>
+
+</html>

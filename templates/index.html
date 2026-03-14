@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vikas's Garden — A Digital Garden</title>
+    <meta name="description"
+        content="A personal digital garden of interconnected notes on history, ideas, philosophy, and the world." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/garden.css" />
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌿%3C/text%3E%3C/svg%3E" />
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="index.html" class="site-logo">🌿 Vikas's Garden</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">all notes</a></li>
+                <li><a href="graph.html">graph</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        <section class="garden-hero">
+            <h1>Welcome to my garden</h1>
+            <p class="tagline">This is not a blog. It's a digital garden — a collection of interconnected notes and
+                ideas at various stages of growth. Some are seedlings (🌱), just an idea. Some are growing (🌿), taking
+                shape. Some are evergreen (🌳), well-developed and revisited often.</p>
+            <p class="tagline">Wander freely. Follow the links. There is no right order.</p>
+            <div class="garden-stats">{{count}} notes growing</div>
+        </section>
+
+        <section class="stage-legend">
+            <span class="legend-item seedling">🌱 Seedling — early idea</span>
+            <span class="legend-item growing">🌿 Growing — taking shape</span>
+            <span class="legend-item evergreen">🌳 Evergreen — well-developed</span>
+        </section>
+
+        <div class="garden-grid">
+            {{cards}}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        Vikas Gaur · A digital garden — ideas at various stages of growth.
+    </footer>
+
+</body>
+
+</html>

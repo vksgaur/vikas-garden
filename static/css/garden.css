@@ -1,0 +1,449 @@
+/* ═══════════════════════════════════════════════════════════════
+   Vikas's Digital Garden — CSS
+   Same aesthetic family as the blog (cream, serif, minimal)
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    --bg: #faf8f0;
+    --bg-alt: #f3f0e5;
+    --bg-card: #fff;
+    --text: #2a2a2a;
+    --text-muted: #6b6b6b;
+    --text-light: #999;
+    --accent: #3b3b9e;
+    --accent-hover: #2a2a7a;
+    --green: #3b9e6b;
+    --green-light: rgba(59, 158, 107, 0.08);
+    --border: #e0ddd4;
+    --serif: 'Crimson Pro', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+    --content-width: 720px;
+    --wide-width: 960px;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 18px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: var(--serif);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.85;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+::selection {
+    background: rgba(59, 158, 107, 0.15);
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* ── Navigation ──────────────────────────────────────── */
+.site-header {
+    padding: 2rem 2rem 0;
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.site-logo {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.site-logo:hover {
+    color: var(--green);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: lowercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--green);
+    text-decoration: none;
+}
+
+/* ── Main ────────────────────────────────────────────── */
+.site-main {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    flex: 1;
+    width: 100%;
+}
+
+/* ── Garden Hero ─────────────────────────────────────── */
+.garden-hero {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.garden-hero h1 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+}
+
+.garden-hero .tagline {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 0.5rem;
+}
+
+.garden-stats {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--green);
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ── Stage Legend ─────────────────────────────────────── */
+.stage-legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.legend-item {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+/* ── Garden Grid ─────────────────────────────────────── */
+.garden-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.garden-card {
+    display: block;
+    padding: 1.3rem 1.5rem;
+    background: var(--bg-card);
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.garden-card:hover {
+    background: var(--green-light);
+    text-decoration: none;
+}
+
+.garden-card h2 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+}
+
+.garden-card p {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+}
+
+.card-stage {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    margin-bottom: 0.4rem;
+}
+
+.card-meta {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--text-light);
+}
+
+/* ── Note Page ───────────────────────────────────────── */
+.note-header {
+    margin-bottom: 2.5rem;
+}
+
+.note-header h1 {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+}
+
+.note-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+}
+
+.note-stage {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+}
+
+.note-stage.seedling {
+    background: #f0f7e6;
+    color: #5a8a3a;
+}
+
+.note-stage.growing {
+    background: #e6f5ed;
+    color: #2a7a4a;
+}
+
+.note-stage.evergreen {
+    background: #e0f0e6;
+    color: #1a6a3a;
+}
+
+.note-tag {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(59, 59, 158, 0.06);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+}
+
+/* ── Note Body ───────────────────────────────────────── */
+.note-body {
+    font-size: 1rem;
+    line-height: 1.88;
+}
+
+.note-body p {
+    margin-bottom: 1.4rem;
+}
+
+.note-body h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2.5rem 0 1rem;
+    color: var(--text);
+}
+
+.note-body h3 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 2rem 0 0.8rem;
+}
+
+.note-body blockquote {
+    border-left: 3px solid var(--green);
+    margin: 1.5rem 0;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.note-body ul,
+.note-body ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.note-body li {
+    margin-bottom: 0.3rem;
+}
+
+.note-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+}
+
+/* Wiki links */
+.wiki-link {
+    color: var(--green);
+    font-weight: 500;
+    border-bottom: 1px dashed var(--green);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.wiki-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
+.wiki-link.broken {
+    color: var(--text-light);
+    border-bottom: 1px dashed var(--text-light);
+    cursor: help;
+}
+
+/* ── Backlinks ───────────────────────────────────────── */
+.backlinks-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.backlinks-section h2 {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.backlinks-list {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.backlink-item {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--green);
+    background: var(--green-light);
+    padding: 0.35rem 0.8rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.backlink-item:hover {
+    background: rgba(59, 158, 107, 0.15);
+    text-decoration: none;
+}
+
+.no-backlinks {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--text-light);
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+.site-footer {
+    max-width: var(--wide-width);
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--text-light);
+    text-align: center;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+
+    .site-header {
+        padding: 1.5rem 1.2rem 0;
+    }
+
+    .site-nav {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .nav-links {
+        gap: 1.2rem;
+        justify-content: center;
+    }
+
+    .site-main {
+        padding: 2rem 1.2rem;
+    }
+
+    .note-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .stage-legend {
+        gap: 0.8rem;
+    }
+}
